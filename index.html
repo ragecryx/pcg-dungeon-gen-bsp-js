@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<script src="jquery-1.11.1.min.js"></script>
+		<script src="mersenne-twister.js"></script>
+		<script src="easystar-0.1.8.min.js"></script>
+		<script src="dungeon.js"></script>
+	</head>
+	<body onload="GenerateNew();">
+		<h3>BSP-based Dungeon Generator</h3>
+		<button onclick="GenerateNew();">Generate New!</button>
+		<br />
+		<button onclick="showDebug=true;">Show Debug</button>
+		<button onclick="showDebug=false;">Hide Debug</button>
+		<br />
+		Generate new after toggling debug drawing.
+		<br />
+		<img src='princess.png' /> = Entrance <br />
+		<img src='throne.png' /> = Exit
+		<br />
+		<canvas id="dungeon" width="1300" height="900" style="border-style:solid; border-color:darkblue;">
+			Canvas not working!
+		</canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('dungeon');
+			if (canvas.getContext)
+				context = canvas.getContext('2d');
+			
+			function CtxClear() {
+				context.clearRect (0,0,1300,900);
+				context.fillStyle = "rgb(0,0,0)";
+				context.fillRect(0,0,1300,900);
+			}
+
+			var showDebug = false;
+
+			var images = {
+				floor: new Image(),
+				enter: new Image(),
+				exit: new Image()
+			};
+			images.floor.src = 'floor.png';
+			images.enter.src = 'princess.png';
+			images.exit.src = 'throne.png';
+
+			function GenerateNew() {
+				CtxClear();
+				var d = new Dungeon(40, 30, 32);
+				d.showDebug = showDebug;
+				d.setupDebug(context, 32);
+				d.Generate();
+				d.Draw(context, images);
+			}
+		</script>
+	</body>
+</html>
